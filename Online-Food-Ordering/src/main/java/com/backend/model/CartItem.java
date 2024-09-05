@@ -1,33 +1,35 @@
 package com.backend.model;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class IngredientsItem {
+@AllArgsConstructor
+public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long Id;
-
-    private String name;
+    private long Id;
 
     @ManyToOne
-    private IngredientCategory category;
-
     @JsonIgnore
+    private Cart cart;
+
     @ManyToOne
-    private Restaurant restaurant;
+    private Food food;
 
-    private boolean inStock = true;
+    private int quantity;
 
+    private List<String> ingredients;
 
-
+    private Long totalPrice;
 
 }
