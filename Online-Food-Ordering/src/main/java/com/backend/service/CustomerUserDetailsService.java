@@ -26,7 +26,7 @@ public class CustomerUserDetailsService implements UserDetailsService {
 
         User user = userRespository.findByEmail(username);
 
-        if(user != null){
+        if(user == null){
             throw new UsernameNotFoundException("User not found with email " + username);
         }
 

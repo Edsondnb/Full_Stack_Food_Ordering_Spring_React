@@ -1,6 +1,9 @@
 package com.backend.response;
 
 import com.backend.model.USER_ROLE;
+import lombok.Data;
+
+@Data
 
 public class AuthResponse {
 
