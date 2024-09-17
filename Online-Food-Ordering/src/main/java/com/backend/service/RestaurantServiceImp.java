@@ -6,6 +6,7 @@ import com.backend.model.Restaurant;
 import com.backend.model.User;
 import com.backend.repository.AddressRepository;
 import com.backend.repository.RestaurantRepository;
+import com.backend.repository.UserRespository;
 import com.backend.request.CreateRestaurantRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -25,7 +27,7 @@ public class RestaurantServiceImp implements RestaurantService{
     private AddressRepository addressRepository;
 
     @Autowired
-    private UserService userService;
+    private UserRespository userRespository;
 
     @Override
     public Restaurant createRestaurant(CreateRestaurantRequest req, User user) {
@@ -68,40 +70,74 @@ public class RestaurantServiceImp implements RestaurantService{
     @Override
     public void deleteRestaurant(Long restaurantId) throws Exception {
 
+        Restaurant restaurant = findRestaurantById(restaurantId);
+
+        restaurantRepository.delete(restaurant);
+
     }
 
     @Override
     public List<Restaurant> getAllRestaurant() {
-        return List.of();
+
+        return  restaurantRepository.findAll();
     }
 
     @Override
-    public List<Restaurant> searchRestaurant() {
-        return List.of();
+    public List<Restaurant> searchRestaurant(String keyword) {
+        return restaurantRepository.findBySearchQuery(keyword);
+
     }
 
     @Override
     public Restaurant findRestaurantById(Long id) throws Exception {
+        Optional<Restaurant> opt = restaurantRepository.findById(id);
 
+        if(opt.isEmpty()){
+            throw new Exception("Restaurant not found with id " + id);
+        }
 
-        return null;
+        return opt.get();
     }
 
     @Override
     public Restaurant getRestaurantByUserId(Long userId) throws Exception {
 
-
-
-        return null;
+        Restaurant restaurant = restaurantRepository.findByOwnerId(userId);
+        if(restaurant==null){
+            throw new Exception("Restaurant not found with owner id " + userId);
+        }
+        return restaurant;
     }
 
     @Override
-    public RestaurantDto addToFavorities(Long restaurantId, User user) throws Exception {
-        return null;
+    public RestaurantDto addToFavorites(Long restaurantId, User user) throws Exception {
+
+        Restaurant restaurant = findRestaurantById(restaurantId);
+
+        RestaurantDto dto = new RestaurantDto();
+        dto.setDescription(restaurant.getDesctiption());
+        dto.setImages(restaurant.getImages());
+        dto.setTitle(restaurant.getName());
+        dto.setId(restaurantId);
+
+        if(user.getFavorites().contains(dto)){
+            user.getFavorites().remove(dto);
+        }else {
+            user.getFavorites().add(dto);
+        }
+
+        userRespository.save(user);
+
+        return dto;
     }
 
     @Override
     public Restaurant updateRestaurantStatus(Long id) throws Exception {
-        return null;
+
+        Restaurant restaurant = findRestaurantById(id);
+        restaurant.setOpen(!restaurant.isOpen());
+
+
+        return restaurantRepository.save(restaurant);
     }
 }
