@@ -4,10 +4,12 @@ import com.backend.model.Category;
 import com.backend.model.Restaurant;
 import com.backend.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class CategoryServiceImp implements CategoryService{
 
     @Autowired
@@ -42,7 +44,7 @@ public class CategoryServiceImp implements CategoryService{
         Optional<Category> optionalCategory = categoryRepository.findById(id);
 
         if(optionalCategory.isEmpty()){
-            throw new Exception("Category nnot found");
+            throw new Exception("Category not found");
         }
 
 
