@@ -77,11 +77,20 @@ public class IngredientsServiceImp implements IngredientsService {
 
     @Override
     public List<IngredientsItem> findRestaurantsIngredients(Long restaurantId) {
-        return List.of();
+        return ingredientItemRepository.findByRestaurantId(restaurantId);
     }
 
     @Override
     public IngredientsItem updateStock(Long id) throws Exception {
-        return null;
+        Optional<IngredientsItem> optionalIngredientsItem = ingredientItemRepository.findById(id);
+
+        if(optionalIngredientsItem.isEmpty()){
+            throw  new Exception("ingredient not found");
+        }
+
+        IngredientsItem ingredientsItem = optionalIngredientsItem.get();
+        ingredientsItem.setInStock(!ingredientsItem.isInStock());
+
+        return ingredientItemRepository.save(ingredientsItem);
     }
 }
