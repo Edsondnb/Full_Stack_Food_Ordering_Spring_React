@@ -3,13 +3,15 @@ package com.backend.service;
 import com.backend.model.*;
 import com.backend.repository.*;
 import com.backend.request.OrderRequest;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService{
@@ -33,7 +35,7 @@ public class OrderServiceImpl implements OrderService{
     private CartService cartService;
 
     @Override
-    public Order createOrder(OrderRequest order, User user) throws Exception{
+    public Order createOrder(OrderRequest order, User user) throws Exception {
 
         Address shippAddress = order.getDeliveryAddress();
 
@@ -57,7 +59,7 @@ public class OrderServiceImpl implements OrderService{
 
         List<OrderItem> orderItems = new ArrayList<>();
 
-        for(CartItem cartItem : cart.getItem()){
+        for(CartItem cartItem : cart.getItems()){
             OrderItem orderItem = new OrderItem();
             orderItem.setFood(cartItem.getFood());
             orderItem.setIngredients(cartItem.getIngredients());
@@ -81,21 +83,50 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public Order updateOrder(Long orderId, String orderStatus) throws Exception {
-        return null;
+        Order order = findOrderById(orderId);
+        if(orderStatus.equals("OUR_FOR_DELIVERY")
+                || orderStatus.equals("DELIVERY")
+                || orderStatus.equals("COMPLETED")
+                || orderStatus.equals("PENDING")){
+            order.setOrderStatus(orderStatus);
+            return orderRepository.save(order);
+        }
+        throw new Exception("Please select a valid order status");
     }
 
     @Override
-    public void calcelOrder(Long orderId) throws Exception {
+    public void cancelOrder(Long orderId) throws Exception {
+
+        Order order = findOrderById(orderId);
+        orderRepository.deleteById(orderId);
 
     }
 
     @Override
     public List<Order> getUserOrder(Long userId) throws Exception {
-        return List.of();
+        return orderRepository.findByCustomerId(userId);
     }
 
     @Override
     public List<Order> getRestaurantsOrder(Long restaurantId, String orderStatus) throws Exception {
-        return List.of();
+
+        List<Order> orders =  orderRepository.findByRestaurantId(restaurantId);
+
+        if(orderStatus!=null){
+            orders = orders.stream().filter(order ->
+                    order.getOrderStatus().equals(orderStatus)).collect(Collectors.toList());
+        }
+
+        return orders;
+
+    }
+
+    @Override
+    public Order findOrderById(Long orderId) throws Exception {
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+        if(optionalOrder.isEmpty()){
+            throw new Exception("Order not found");
+        }
+        return optionalOrder.get();
     }
 }

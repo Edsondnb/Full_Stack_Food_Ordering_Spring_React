@@ -87,7 +87,7 @@ public class CartServiceImpl implements CartService{
 
         CartItem item = cartItemOptional.get();
 
-        cart.getItem().remove(item);
+        cart.getItems().remove(item);
 
         return cart;
     }
@@ -96,7 +96,7 @@ public class CartServiceImpl implements CartService{
     public Long calculateCartTotals(Cart cart) throws Exception {
         Long total = 0L;
 
-        for (CartItem cartItem : cart.getItem()){
+        for (CartItem cartItem : cart.getItems()){
             total += cartItem.getFood().getPrice()*cartItem.getQuantity();
 
         }
@@ -125,7 +125,7 @@ public class CartServiceImpl implements CartService{
     public Cart clearCart(Long userId) throws Exception {
         //User user = userService.findUserByJwtToken(jwt);
         Cart cart = findCartByUserId(userId);
-        cart.getItem().clear();
+        cart.getItems().clear();
 
         return cartRepository.save(cart);
     }
