@@ -4,13 +4,13 @@ import { MultiItemCarousel } from './MultiItemCarousel'
 import { RestaurantCard } from '../Restaurant/RestaurantCard'
 
 
-const restaurant = [1,1,1,1,1,1,1]
+const restaurant = [1,1,1,1,1,1,1,1,1,1]
 
 export const Home = () => {
 
   return (
 
-    <div className=''>
+    <div className='pb-10'>
         <section className='banner -z-50 relative flex flex-col justify-center
         items-center'>
 
@@ -33,17 +33,18 @@ export const Home = () => {
           <MultiItemCarousel/>
         </section>
 
-        <section className='px-5 lg:px-20'>
-          <div className="text-2xl font-semibold text-gray-400 py-3 ">
+        <section className='px-5 lg:px-20 pt-5'>
+          <div className="text-2xl font-semibold text-gray-400 pb-8 ">
             <h1 className=''>Order form our Handpicked Favorites</h1>
           </div>
 
-          <div>
+          <div className='flex flex-wrap items-center justify-around gap-5'>
+            {
+              restaurant.map((item)=> <RestaurantCard/>)
+            }
             
           </div>
         </section>
-
-        <RestaurantCard/>
         
     </div>
 
