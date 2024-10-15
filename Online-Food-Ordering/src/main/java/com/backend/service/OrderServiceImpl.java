@@ -59,7 +59,7 @@ public class OrderServiceImpl implements OrderService{
 
         List<OrderItem> orderItems = new ArrayList<>();
 
-        for(CartItem cartItem : cart.getItems()){
+        for(CartItem cartItem : cart.getItem()){
             OrderItem orderItem = new OrderItem();
             orderItem.setFood(cartItem.getFood());
             orderItem.setIngredients(cartItem.getIngredients());
