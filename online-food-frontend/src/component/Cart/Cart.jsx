@@ -4,6 +4,8 @@ import { CartItem } from './CartItem'
 import { AddressCard } from './AddressCard'
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import { AddLocation } from '@mui/icons-material';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 const style = {
     position: 'absolute',
@@ -13,9 +15,24 @@ const style = {
     width: 400,
     bgcolor: 'background.paper',
     outline: 'none',
+
     boxShadow: 24,
     p: 4,
 };
+
+const initialValues = {
+    streetAddress: '',
+    state: '',
+    pincode: '',
+    city: ''
+}
+
+const validationSchema = Yup.object.shape({
+    streetAddress: Yup.string().required('StreetAddress is Required'),
+    state: Yup.string().required('State is Required'),
+    pincode: Yup.string().required('Pincode is Required'),
+    city: Yup.string().required('City is Required')
+})
 
 
 const items = [1,1,1]
@@ -28,6 +45,8 @@ const Cart = () => {
 
     const [open, setOpen] = React.useState(false);
     const handleClose = () => setOpen(false);
+
+    const handleSubmit = () =>{}
 
   return (
 
@@ -91,7 +110,12 @@ const Cart = () => {
             aria-describedby="modal-modal-description"
             >
             <Box sx={style}>
-                
+                <Formik initialValues={initialValues}
+                    validationSchema={validationSchema}
+                    onSubmit={handleSubmit}
+                >
+
+                </Formik>
             </Box>
         </Modal>
 
