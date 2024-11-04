@@ -4,6 +4,7 @@ import { MultiItemCarousel } from './MultiItemCarousel'
 import { RestaurantCard } from '../Restaurant/RestaurantCard'
 
 
+
 const restaurant = [1,1,1,1,1,1,1,1,1,1]
 
 export const Home = () => {
@@ -45,7 +46,7 @@ export const Home = () => {
             
           </div>
         </section>
-        
+                
     </div>
 
   )
