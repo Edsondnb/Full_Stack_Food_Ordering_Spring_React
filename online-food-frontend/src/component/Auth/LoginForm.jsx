@@ -1,7 +1,8 @@
-import { TextField, Typography } from '@mui/material'
-import { Field, Formik } from 'formik'
+import { Button, TextField, Typography } from '@mui/material'
+import { Field, Formik, Form } from 'formik'
 import React from 'react'
-import { Form } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+
 
 const initialValues = {
   email: "",
@@ -10,8 +11,10 @@ const initialValues = {
 
 export const LoginForm = () => {
 
-  const handleSubmit = () => {
+  const navigate = useNavigate()
 
+  const handleSubmit = () => {
+    
   }
 
   return (
@@ -39,10 +42,15 @@ export const LoginForm = () => {
             variant="outlined"
             margin="normal"
           />
+          <Button sx={{mt: 2, padding: "1rem"}} fullWidth type='submit' variant='contained'>Login</Button>
           
         </Form>
       </Formik>
 
+      <Typography variant='body2' align='center' sx={{mt: 3}}>
+        Don't have an account?
+        <Button size='small' onClick={() => navigate("/account/register")}>Register</Button>
+      </Typography>
 
     </div>
   )

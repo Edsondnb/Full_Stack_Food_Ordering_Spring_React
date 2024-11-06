@@ -19,6 +19,7 @@ export const CustomerRouter = () => {
         <Route path='/cart' element={<Cart/>}/>
         <Route path='/my-profile/*' element={<Profile/>}/>
       </Routes>
+      
       <Auth/>
     </div>
   )

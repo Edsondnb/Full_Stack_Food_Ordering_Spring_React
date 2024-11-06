@@ -10,18 +10,19 @@ import { LoginForm } from './LoginForm';
 export const Auth = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    
     const handleOnClose = () => {
         navigate("/")
     }
 
   return (
     <>
-        <Modal onclose={handleOnClose} open={ 
+        <Modal onClose={handleOnClose} open={ 
             location.pathname === "/account/register" 
             || location.pathname === "/account/login"
         }>
             <Box sx={style}>
-                {location.pathname === "/account/register" ? <RegisterForm/>: <LoginForm/>}
+                {location.pathname === "/account/register" ? <RegisterForm/> : <LoginForm/>}
             </Box>
 
         </Modal>
