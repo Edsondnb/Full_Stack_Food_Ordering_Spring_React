@@ -1,13 +1,30 @@
 import axios from "axios";
+import {
+    REGISTER_REQUEST,
+    REGISTER_SUCCESS,
+    REGISTER_FAILURE,
+    LOGIN_REQUEST,
+    LOGIN_SUCCESS,
+    LOGIN_FAILURE,
+    GET_USER_REQUEST,
+    GET_USER_FAILURE,
+    ADD_TO_FAVORITE_REQUEST,
+    ADD_TO_FAVORITE_SUCCESS,
+    ADD_TO_FAVORITE_FAILURE,
+    LOGOUT,
+} from './ActionTypes';
+
+import { api, API_URL } from "../../config/api";
+  
 
 
 export const registerUser=(reqData) => async (dispatch) => {
-    dispatch({type: REGISTER_REQUEST});
+    dispatch({type: REGISTER_SUCCESS});
 
     try{
         const {data} = await axios.post(`${API_URL}/auth/signup`, reqData.userData);
         
-        if(data.jwt)localStorage.setItem("token", data.jwt);
+        if(data.jwt)localStorage.setItem("jwt", data.jwt);
         if(data.role==="ROLE_RESTAURANT_OWNER"){
             reqData.navigate("/admin/restaurant")
         }
